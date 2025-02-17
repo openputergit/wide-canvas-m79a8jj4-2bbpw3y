@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RailEase - Smart Railway Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+        }
+        .neumorphic {
+            background: #f5f7fa;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+            border-radius: 20px;
+        }
+        .chat-bot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .journey-map {
+            background: linear-gradient(45deg, #2b5876, #4e4376);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="neumorphic fixed w-full z-50 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <img src="https://firebasestorage.googleapis.com/v0/b/widecanvas-d0dd4.appspot.com/o/logos%2FScreenshot%202025-02-15%20132716.png?alt=media&token=aa88b535-02cf-4026-8e9e-04628b013d53" alt="RailEase Logo" class="h-10">
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="hover:text-blue-600 transition">Home</a>
+                <a href="#booking" class="hover:text-blue-600 transition">Book Tickets</a>
+                <a href="#pnr" class="hover:text-blue-600 transition">PNR Status</a>
+                <a href="#account" class="hover:text-blue-600 transition">My Account</a>
+            </div>
+            <button class="neumorphic px-6 py-2 text-blue-600 font-medium" onclick="toggleLogin()">Login</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="journey-map min-h-screen pt-24 pb-32 px-6">
+        <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="text-white">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">Smart Railway Booking Made Simple</h1>
+                <p class="text-lg mb-8">Book your journey with voice commands, AI assistance, and automatic booking features.</p>
+                <div class="flex space-x-4">
+                    <button class="neumorphic px-8 py-3 text-blue-600 font-medium" onclick="scrollToBooking()">Book Now</button>
+                    <button class="glass-effect px-8 py-3 text-white font-medium" onclick="activateVoice()">
+                        <i class="bi bi-mic-fill mr-2"></i>Voice Booking
+                    </button>
+                </div>
+            </div>
+            <div class="float-animation">
+                <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_khzniaya.json" background="transparent" speed="1" style="height: 400px;" loop autoplay></lottie-player>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="py-16 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Book Your Journey</h2>
+            <div class="neumorphic p-8">
+                <form id="bookingForm" class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block mb-2">From Station</label>
+                        <input type="text" class="w-full p-3 rounded-lg neumorphic" placeholder="Enter departure station">
+                    </div>
+                    <div>
+                        <label class="block mb-2">To Station</label>
+                        <input type="text" class="w-full p-3 rounded-lg neumorphic" placeholder="Enter destination station">
+                    </div>
+                    <div>
+                        <label class="block mb-2">Date of Journey</label>
+                        <input type="date" class="w-full p-3 rounded-lg neumorphic">
+                    </div>
+                    <div>
+                        <label class="block mb-2">Class</label>
+                        <select class="w-full p-3 rounded-lg neumorphic">
+                            <option>Select Class</option>
+                            <option>Sleeper</option>
+                            <option>AC First Class</option>
+                            <option>AC Second Class</option>
+                            <option>AC Third Class</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="md:col-span-2 neumorphic px-8 py-3 text-blue-600 font-medium">Search Trains</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- PNR Status Section -->
+    <section id="pnr" class="py-16 px-6 bg-gray-50">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Check PNR Status</h2>
+            <div class="neumorphic p-8 max-w-2xl mx-auto">
+                <form id="pnrForm" class="space-y-6">
+                    <div>
+                        <label class="block mb-2">PNR Number</label>
+                        <input type="text" class="w-full p-3 rounded-lg neumorphic" placeholder="Enter 10-digit PNR number">
+                    </div>
+                    <div>
+                        <label class="block mb-2">Verification</label>
+                        <div class="flex items-center space-x-4">
+                            <div id="captcha" class="neumorphic p-3 font-bold"></div>
+                            <input type="text" class="w-full p-3 rounded-lg neumorphic" placeholder="Enter the result">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full neumorphic px-8 py-3 text-blue-600 font-medium">Check Status</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot -->
+    <div class="chat-bot">
+        <button onclick="toggleChat()" class="neumorphic p-4 rounded-full">
+            <i class="bi bi-chat-dots-fill text-2xl text-blue-600"></i>
+        </button>
+        <div id="chatWindow" class="hidden neumorphic absolute bottom-16 right-0 w-80 h-96">
+            <div class="p-4 border-b">
+                <h3 class="font-bold">RailEase Assistant</h3>
+            </div>
+            <div id="chatMessages" class="h-64 overflow-y-auto p-4">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="p-4 border-t">
+                <div class="flex space-x-2">
+                    <input type="text" id="chatInput" class="flex-1 p-2 rounded-lg neumorphic" placeholder="Type your message...">
+                    <button onclick="sendMessage()" class="neumorphic p-2 rounded-lg">
+                        <i class="bi bi-send-fill text-blue-600"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Voice Command Support
+        function activateVoice() {
+            if ('webkitSpeechRecognition' in window) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    alert('Voice recognition activated. Speak now...');
+                };
+
+                recognition.onresult = (event) => {
+                    const command = event.results[0][0].transcript;
+                    processVoiceCommand(command);
+                };
+
+                recognition.start();
+            } else {
+                alert('Voice recognition is not supported in your browser.');
+            }
+        }
+
+        function processVoiceCommand(command) {
+            // Simple command processing example
+            if (command.toLowerCase().includes('book')) {
+                scrollToBooking();
+            }
+            // Add more voice command processing logic here
+        }
+
+        // Chatbot functionality
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('hidden');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (message) {
+                addMessage('user', message);
+                // Simulate AI response
+                setTimeout(() => {
+                    addMessage('bot', 'I understand you want to know about ' + message + '. How can I help you?');
+                }, 1000);
+                input.value = '';
+            }
+        }
+
+        function addMessage(sender, text) {
+            const messages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-4 ${sender === 'user' ? 'text-right' : ''}`;
+            messageDiv.innerHTML = `
+                <div class="${sender === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-100'} inline-block p-3 rounded-lg max-w-[80%]">
+                    ${text}
+                </div>
+            `;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // PNR Captcha
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 10);
+            const num2 = Math.floor(Math.random() * 10);
+            document.getElementById('captcha').textContent = `${num1} + ${num2} = ?`;
+            return num1 + num2;
+        }
+
+        // Initialize captcha
+        let captchaResult = generateCaptcha();
+
+        // Form submissions
+        document.getElementById('pnrForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userInput = e.target.querySelector('input[type="text"]:last-of-type').value;
+            if (parseInt(userInput) === captchaResult) {
+                alert('PNR status check initiated!');
+                captchaResult = generateCaptcha();
+            } else {
+                alert('Incorrect captcha!');
+            }
+        });
+
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Searching for trains...');
+        });
+
+        function scrollToBooking() {
+            document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleLogin() {
+            // Implement login modal here
+            alert('Login functionality coming soon!');
+        }
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
